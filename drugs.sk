@@ -1,0 +1,80 @@
+# Druggery V2 by xccs
+
+on load:
+
+    set {_candy} to pink wool named "&dCandy" # Candy (Meant to be Jolly Ranchers) 
+    register new shaped recipe for {_candy} named "&dCandy" using sugar, sugar, sugar, sugar, pink dye, sugar, sugar, sugar and sugar with id "candy"
+    
+    set {_cough_syrup} to water bottle named "&aCough Syrup" # Cough Syrup
+    register new shaped recipe for {_cough_syrup} named "&aCough Syrup" using air, air, air, water bottle, sugar, sweet berries, air, air and air with id "cough_syrup"
+    
+    set {_fizzy_melon} to water bottle named "&eFizzy Melon" # Fizzy Drink
+    register new shaped recipe for {_fizzy_melon} named "&eFizzy Melon" using air, air, air, water bottle, sugar, melon slice, air, air and air with id "fizzy_melon"
+
+    set {_lean} to water bottle named "&bLean" # Lean Item
+    register new shaped recipe for {_lean} named "&bLean" using air, air, air, {_cough_syrup}, {_candy}, {_fizzy_melon}, air, air and air with id "lean"
+
+    set {_vape_core} to sea lantern named "&6Vape Core" # Vape Core
+    register new shaped recipe for {_vape_core} named "&6Vape Core" using air, air, air, air, diamond, air, air, air and air with id "vape_core"
+
+    set {_vape} to carrot on stick named "&3Base Vape"
+    register new shaped recipe for {_vape} named "&3Base Vape" using air, iron nugget, air, iron nugget, {_vape_core}, iron nugget, air, iron nugget and air with id "base_vape"
+
+    set {_tobacco} to dried kelp named "&9Tobacco"
+
+command brandVape <string> [Lore 1] <string> [Lore 2]:
+    trigger:
+        if player's tool is carrot on stick named "&3Base Vape":
+            set line 1 of lore of player's tool to arg-1
+            set line 2 of lore of player's tool to arg-2
+        else:
+            send "&c -- Invalid Item! --" to the player
+
+on rightclick with flint and steel:
+    if player's offhand is seeds:
+        remove 1 seeds from the player
+        give 1 diamond to the player
+        decrease player's tool's durability by 3
+
+        if durability of player's tool <= 0:
+            remove player's tool from the player
+
+
+on right click with pink wool:
+    if name of event-item is "&dCandy":
+        cancel event
+        send "&c-- You can't place candy! --" to the player
+
+on right click with sea lantern:
+    if name of event-item is "&6Vape Core":
+        cancel event
+        send "&c -- You can't place Vape Cores! --" to the player
+
+on consume of water bottle:
+    if name of event-item is "&bLean":
+        send " -- You sip on the lean... -- " to the player
+        wait 80 ticks
+        send " -- You begin to feel strange... --" to the player
+        wait 80 ticks
+        send " -- You feel yourself dozing off... -- " to the player
+        wait 80 ticks
+        apply nausea potion of tier 4 without any particles whilst hiding the potion icon to the player
+        apply blindness potion of tier 4 without any particles whilst hiding the potion icon to the player
+        apply slowness potion of tier 4 without any particles whilst hiding the potion icon to the player
+        apply darkness potion of tier 10 without any particles whilst hiding the potion icon to the player
+        wait 200 ticks
+        send " -- You wake up. --"
+
+
+
+on right click with carrot on stick:
+    show 150 smoke at player's head to player
+    wait 1 tick
+    apply nausea potion of tier 1 without any particles whilst hiding the potion icon to the player for 80 ticks
+    damage player's tool by 5
+        
+    if durability of player's tool <= 0:
+        remove player's tool from the player
+        create an explosion of force 1 at the player
+        send " -- Your vape spontaneously combusted. --" to player
+        
