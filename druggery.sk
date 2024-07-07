@@ -1,0 +1,71 @@
+on load:
+
+  set {_candy_apple} to apple named "&dCandy Apple"
+  
+  register new shaped recipe for {_candy_apple} named "&dCandy Apple" using sugar, sugar, sugar, sugar, apple, sugar, sugar, sugar and sugar with id "candy_apple"
+  
+  set {_cough_syrup} to water bottle named "&aCough Syrup"
+  
+  register new shaped recipe for {_cough_syrup} named "&aCough Syrup" using water bottle, sugar, sweet berries, carrot, air, air, air, air and air with id "cough_syrup"
+  
+  set {_fizzy_melon} to water bottle named "&eFizzy Melon"
+  
+  register new shaped recipe for {_fizzy_melon} named "&eFizzy Melon" using water bottle, sugar, melon slice, air, air, air, air, air and air with id "fizzy_melon"
+
+
+  set {_lean} to water bottle named "&bLean"
+
+  register new shaped recipe for {_lean} named "&bLean" using air, air, air, {_cough_syrup}, {_fizzy_melon}, {_candy_apple}, air, air and air with id "lean"
+
+
+on consume of water bottle:
+	if name of event-item is "&bLean":
+		remove 1 water bottle from player
+		send " -- You sip on the lean... -- " to the player
+		wait 80 ticks
+		send " -- You begin to feel strange... --" to the player
+		apply nausea potion of tier 4 without any particles whilst hiding the potion icon to the player
+		apply blindness potion of tier 4 without any particles whilst hiding the potion icon to the player
+		apply slowness potion of tier 4 without any particles whilst hiding the potion icon to the player
+		wait 240 ticks
+		send " -- You feel yourself dozing off... -- " to the player
+		wait 80 ticks
+		send " -- You wake up. --"
+
+on rightclick with sugar:
+	if name of player's tool is "Cocaine":
+		send " -- You inhaled the Cocaine... -- " to the player
+		remove 1 sugar named "Cocaine" from the player
+		wait 80 ticks
+		send " -- You begin to feel strange... --" to the player
+		apply nausea potion of tier 4 without any particles whilst hiding the potion icon to the player
+		wait 240 ticks
+		send " -- You are now high, your productivity has been boosted temporarily -- " to the player
+		apply haste potion of tier 1 without any particles whilst hiding the potion icon to the player
+		apply speed potion of tier 1  without any particles whilst hiding the potion icon to the player
+     
+
+
+on rightclick with carrot on stick:
+    if name of player's tool is "ElfBar":
+        set {_isValid} to true
+    else if name of player's tool is "Crystal":
+        set {_isValid} to true
+    else if name of player's tool is "Lost Mary":
+        set {_isValid} to true
+    else if name of player's tool is "PynePod":
+        set {_isValid} to true
+    else:
+        set {_isValid} to false
+    
+    if {_isValid} is true:
+        show 150 smoke at player's head to player
+        wait 1 tick
+        apply nausea potion of tier 1 without any particles whilst hiding the potion icon to the player for 80 ticks
+        damage player's tool by 2
+        
+        if durability of player's tool <= 0:
+            remove player's tool from the player
+            send " -- Your vape spontaneously combusted. --" to player
+
+
